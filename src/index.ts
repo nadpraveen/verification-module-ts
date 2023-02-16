@@ -2,6 +2,9 @@ export interface Env {
   // Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
   VERIFICATION_TOKENS: KVNamespace;
 
+  NEPTUNE_ENV: string;
+  NEPTUNE_TOKEN: string;
+
   //
   // Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
   // MY_DURABLE_OBJECT: DurableObjectNamespace;
@@ -59,9 +62,9 @@ export default {
 
       const payload = JSON.stringify({
         event_type: eventType,
-        environment: "dev",
-        api_token:
-          "eyJhbGciOiJFZERTQSJ9.eyJleHAiOjE3MDc4Mjg2MzcsInN1YiI6ImFkMmExMDg3LTY5ODktNGNkYi05ZDkwLTAzYWM1OGFkYTYyYiIsImlzcyI6InRlYW0iLCJqdGkiOiI3NWEwNWRiOC1kNjNiLTRlMTctYTk5NC05ZTFjNGJlODUyMGEifQ.iQVbJwb7y2RtZ0pY_xWUQGt6qLuzeml58aBXaR89RRc61-AWRw6UqCBz0fWHuaNQkDfhRYvBcnCdb0p1WhSjBQ",
+        environment: env.NEPTUNE_ENV,
+        api_token: env.NEPTUNE_TOKEN,
+
         version: "1",
         data: {
           otp: randomNumber,
