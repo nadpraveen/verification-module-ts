@@ -37,7 +37,11 @@ export default {
       const addVerification = await setVerification(data, env);
 
       if (addVerification) {
-        return new Response("verification added successfully");
+        return new Response(JSON.stringify(addVerification), {
+          headers: {
+            "Content-type": "application/json",
+          },
+        });
       } else {
         return new Response("somthing went wrong");
       }

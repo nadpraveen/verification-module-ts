@@ -62,7 +62,7 @@ const setVerification = async (data: any, env: Env) => {
 
   await fetch("https://edge.teurons.com/neptune/events/ingest", requestOptions);
 
-  return "success";
+  return data;
 };
 
 export default setVerification;
