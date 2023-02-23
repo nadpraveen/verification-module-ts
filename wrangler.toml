@@ -2,13 +2,22 @@ name = "verification_module_ts"
 main = "src/index.ts"
 compatibility_date = "2023-02-16"
 
+# API_TOKEN = "example_dev_token"
+# STRIPE_TOKEN = "pk_xyz1234_test"
+# [env.staging]
 
-[env.staging]
+[vars]
+# NEPTUNE DATA
+NEPTUNE_ENV="dev"
+
+# TOKEN DATA
+TOKEN_EXP_TIME = "180"
+
+# DATA SOURCEs
+# DATA_SOURCE = "KV"
+DATA_SOURCE = "planet-scale"
+
 [[kv_namespaces]]
 binding = "VERIFICATION_TOKENS"
 preview_id = "679bd5c734ac4707a687876b9439a249"
 id = "679bd5c734ac4707a687876b9439a249"
-
-NEPTUNE_ENV="dev"
-
-TOKEN_EXP_TIME = "180"

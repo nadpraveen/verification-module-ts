@@ -1,15 +1,20 @@
+import { get } from "../core/dbFunctions";
+
 const doVerify = async (params: any, env: any) => {
   const dateTime = new Date(
     new Date().toLocaleString("en", { timeZone: "Asia/Kolkata" })
   );
 
-  let data = await env.VERIFICATION_TOKENS.get(params.email);
+  // const dateTime = dateTimeLocal.toISOString();
+
+  let data = await get(params.email, env);
 
   if (data != null) {
-    let tokenDat = data as string;
-    let verificationToken = JSON.parse(tokenDat);
+    let tokenData = data as string;
+    let verificationToken =
+      typeof data == "object" ? tokenData : JSON.parse(tokenData);
 
-    const expTime = new Date(verificationToken.expairesAt);
+    const expTime = new Date(verificationToken.expires_at);
 
     if (dateTime < expTime) {
       if (params.token == verificationToken.token) {

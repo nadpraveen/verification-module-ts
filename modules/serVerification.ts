@@ -1,30 +1,44 @@
-const setVerification = async (data: any, env: any) => {
-  let existingData = await env.VERIFICATION_TOKENS.get(data.email);
+import { insert, destroy, get } from "../core/dbFunctions";
+
+import { Env } from "../src/index";
+
+const setVerification = async (data: any, env: Env) => {
+  let existingData = await get(data.email, env);
 
   if (existingData !== null) {
-    await env.VERIFICATION_TOKENS.delete(data.email);
+    await destroy(data.email, env);
   }
 
   const randomNumber: number = Math.floor(Math.random() * 90000) + 10000;
-  const currentTime = new Date(
+  const currentLocalDatetime = new Date(
     new Date().toLocaleString("en", { timeZone: "Asia/Kolkata" })
   );
 
-  const expTime = new Date(currentTime.getTime() + 180000);
+  const currentTime = currentLocalDatetime.toISOString();
 
-  let value: string = JSON.stringify({
-    token: randomNumber,
-    createdAt: currentTime,
-    expairesAt: expTime,
-  });
+  const expTime = new Date(
+    currentLocalDatetime.getTime() + 180000
+  ).toISOString();
 
-  //   const currentEpochTime: number = Math.floor(Date.now() / 1000) + 180;
+  data.token = randomNumber;
+  data.created_at = currentTime;
+  data.expires_at = expTime;
 
-  //   await env.VERIFICATION_TOKENS.put(data.email, value, {
-  //     expiration: currentEpochTime,
-  //   });
+  // let value: string = JSON.stringify({
+  //   token: randomNumber,
+  //   createdAt: currentTime,
+  //   expairesAt: expTime,
+  // });
 
-  await env.VERIFICATION_TOKENS.put(data.email, value);
+  // const currentEpochTime: number = Math.floor(Date.now() / 1000) + 180;
+
+  // await env.VERIFICATION_TOKENS.put(data.email, value, {
+  //   expiration: currentEpochTime,
+  // });
+
+  // await env.VERIFICATION_TOKENS.put(data.email, value);
+
+  const insertData = await insert(data, env);
 
   let eventType = "send_verification_token";
 

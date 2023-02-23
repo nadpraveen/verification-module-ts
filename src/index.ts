@@ -1,12 +1,13 @@
 import setVerification from "../modules/serVerification";
 import doVerify from "../modules/doVerification";
+
 export interface Env {
   // Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
   VERIFICATION_TOKENS: KVNamespace;
 
   NEPTUNE_ENV: string;
   NEPTUNE_TOKEN: string;
-
+  DATA_SOURCE: string;
   //
   // Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
   // MY_DURABLE_OBJECT: DurableObjectNamespace;
@@ -33,7 +34,6 @@ export default {
 
     if (pathname == "/set-verify") {
       let data: userInput = await request.json();
-
       const addVerification = await setVerification(data, env);
 
       if (addVerification) {
@@ -41,12 +41,6 @@ export default {
       } else {
         return new Response("somthing went wrong");
       }
-
-      //   return new Response(JSON.stringify(value), {
-      //     headers: {
-      //       "Content-type": "application/json",
-      //     },
-      //   });
     } else if (pathname == "/do-verify") {
       const params: any = {};
       const url = new URL(request.url);
